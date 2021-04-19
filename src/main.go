@@ -1,33 +1,6 @@
 package main
 
-import "fmt"
-import "math"
-import "math/rand"
 import "gonum.org/v1/gonum/mat"
-
-func fmtMatrix(name string, matrix *mat.Dense) {
-	fMatrix := mat.Formatted(matrix, mat.Prefix("    "), mat.Squeeze())
-
-	fmt.Printf(name + " = %v\n", fMatrix)
-}
-
-func randMatrix(x int, y int) *mat.Dense {
-	data := make([]float64, x * y)
-
-	for i := range data {
-		data[i] = rand.NormFloat64()
-	}
-
-	return mat.NewDense(x, y, data)
-}
-
-func log(x float64) float64 {
-	return 1 / (1 + math.Exp(-x))
-}
-
-func relu(matrix *mat.Dense) *mat.Dense {
-	return matrix
-}
 
 func cz(x *mat.Dense, w *mat.Dense, b *mat.Dense) *mat.Dense {
 	wx := mat.NewDense()
@@ -44,8 +17,12 @@ var x *mat.Dense = mat.NewDense(n_inputs, n_samples, data)
 
 func main() {
 	// First layer
-	b := mat.NewDense(n_hidden, 1, nil)
-	w := randMatrix(n_inputs, n_hidden)
+	w1 := randMatrix(n_inputs, n_hidden)
+	b1 := mat.NewDense(1, n_hidden, nil)
+
+	// Second layer
+	w2 := randMatrix(n_hidden, n_output)
+	b2 := mat.NewDense(1, n_output, nil)
 
 	fmtMatrix("b", b)
 	fmtMatrix("w", w)
